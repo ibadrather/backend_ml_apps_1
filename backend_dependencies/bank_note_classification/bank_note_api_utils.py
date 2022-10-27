@@ -5,7 +5,11 @@ import os.path as osp
 
 def get_prediction(data):
     # Loadin the ONNX model
-    ort_session = ort.InferenceSession(osp.join("backend_dependencies", "bank_note_classification", "bank_note_model.onnx"))
+    ort_session = ort.InferenceSession(
+        osp.join(
+            "backend_dependencies", "bank_note_classification", "bank_note_model.onnx"
+        )
+    )
     """
     Function to get predictions from ONNX model
     """
