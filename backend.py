@@ -15,6 +15,7 @@ from backend_dependencies.people_recognition_caption.people_recognition_caption_
     MyRec,
     crop_image,
 )
+from backend_dependencies.translator_en_nl.translator_en_nl import en_nl_query, Payload
 
 
 # FastAPI app
@@ -26,6 +27,7 @@ def index():
     return {"status": "ok"}
 
 
+# Bank note prediction
 @app.post("/predict_bank_note")
 def predict_bank_note(data: BankNote):
     """
@@ -47,6 +49,16 @@ def predict_bank_note(data: BankNote):
         return {"Prediction": 0}
 
 
+# Translator En-Nl
+@app.post("/translate_en_nl")
+def translate_en_nl(payload: Payload):
+    """
+    Function to translate from English to Dutch
+    """
+    return en_nl_query(payload.dict()["text"])
+
+
+# People recognition
 @app.post("/people_recognition_caption")
 async def people_recognition_caption(img: UploadFile = File(...)):
     font, fontScale, color, thickness = (cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
@@ -70,7 +82,7 @@ async def people_recognition_caption(img: UploadFile = File(...)):
     ort_session = ort.InferenceSession(
         osp.join(
             "backend_dependencies",
-            "people_recognition",
+            "people_recognition_caption",
             "people_recognition_model.onnx",
         )
     )
