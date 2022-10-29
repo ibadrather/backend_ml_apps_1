@@ -1,10 +1,17 @@
 import requests
 from pydantic import BaseModel
+from dotenv import load_dotenv
+import os
 
-API_TOKEN = "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"
+
+def config():
+    load_dotenv()
+
+
+config()
 
 API_URL = "https://api-inference.huggingface.co/models/Helsinki-NLP/opus-mt-en-nl"
-headers = {"Authorization": f"Bearer {API_TOKEN}"}
+headers = {"Authorization": f"Bearer {os.getenv('HF_API_TOKEN')}"}
 
 
 def en_nl_query(payload):
