@@ -1,9 +1,6 @@
 import numpy as np
 from fastapi import FastAPI, File, UploadFile
 import cv2
-import random
-import time
-import logging
 from starlette.responses import Response
 from backend_dependencies.bank_note_classification.bank_note_api_utils import (
     get_prediction,
