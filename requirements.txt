@@ -13,3 +13,4 @@ python-dotenv==0.21.0
 python-multipart==0.0.5
 urllib3==1.26.12
 uvicorn==0.18.3
+requests
