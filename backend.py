@@ -9,8 +9,14 @@ from backend_dependencies.bank_note_classification.bank_note_api_utils import (
 from backend_dependencies.people_recognition_caption.people_recognition_caption_utils import (
     image_caption_draw_rectangle,
 )
-from backend_dependencies.translator_en_nl.translator_en_nl import en_nl_query, Payload
-
+from backend_dependencies.translator.translator import hf_translation_request, Payload
+from backend_dependencies.translator.hf_api_urls import (
+    API_URL_EN_NL,
+    API_URL_NL_EN,
+    API_URL_DE_EN,
+    API_URL_EN_DE,
+    API_URL_DE_NL,
+)
 
 # FastAPI app
 app = FastAPI(
@@ -43,12 +49,23 @@ def predict_bank_note(data: BankNote):
 
 
 # Translator En-Nl
-@app.post("/translate_en_nl")
-def translate_en_nl(payload: Payload):
+@app.post("/translator")
+def translator(payload: Payload):
     """
     Function to translate from English to Dutch
     """
-    return en_nl_query(payload.dict()["text"])
+    if payload.input_language == "en" and payload.output_language == "nl":
+        API_URL = API_URL_EN_NL
+    elif payload.input_language == "nl" and payload.output_language == "en":
+        API_URL = API_URL_NL_EN
+    elif payload.input_language == "de" and payload.output_language == "en":
+        API_URL = API_URL_DE_EN
+    elif payload.input_language == "en" and payload.output_language == "de":
+        API_URL = API_URL_EN_DE
+    elif payload.input_language == "de" and payload.output_language == "nl":
+        API_URL = API_URL_DE_NL
+
+    return hf_translation_request(payload.dict()["text"], API_URL)
 
 
 # People recognition
